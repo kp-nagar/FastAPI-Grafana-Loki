@@ -1,0 +1,20 @@
+version: "3.0"
+services:
+  fast_service:
+    container_name: fast-app
+    restart: always
+    build:
+      context: .
+      dockerfile: Fast_Dockerfile
+    ports:
+      - "3005:8000"
+    logging:
+      driver: loki
+      options:
+        loki-url: http://localhost:3100/loki/api/v1/push
+        loki-external-labels: job=dockerlogs,owner=maniuk,environment=development
+    networks:
+      - loki
+  
+networks:
+  loki:
